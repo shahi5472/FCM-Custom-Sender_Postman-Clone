@@ -139,7 +139,10 @@ class HomeView extends StatelessWidget {
 
   AppBar _buildAppBar(Controller data) {
     return AppBar(
-      title: const Text('Flutter FCM Sender'),
+      title: const Text(
+        'Flutter FCM Sender',
+        style: TextStyle(fontFamily: 'ClashDisplay'),
+      ),
       actions: [
         IconButton(
           onPressed: () => data.onClear(),
