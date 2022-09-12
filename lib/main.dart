@@ -60,7 +60,18 @@ class HomeView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Text(json.encode(data.result)),
+          Text(
+            json.encode(data.result),
+            style: const TextStyle(fontFamily: 'Matter'),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              data.formList.length,
+              (index) => Text('${data.formList[index].index.toString()}, '),
+            ),
+          ),
           const SizedBox(height: 20),
         ],
       ),
@@ -86,12 +97,14 @@ class HomeView extends StatelessWidget {
             key: ValueKey(data.formList[index].index),
             initialValue: data.formList[index].key,
             controller: data.formList[index].keyController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(width: 2),
-              ),
-              hintText: 'Key',
+            decoration: InputDecoration(
+              label: Text('Key ${data.formList[index].index.toString()}'),
+              border:
+                  const OutlineInputBorder(borderSide: BorderSide(width: 2)),
+              hintText: 'Key ${data.formList[index].index}',
+              hintStyle: const TextStyle(fontFamily: 'Matter'),
             ),
+            style: const TextStyle(fontFamily: 'Matter'),
             validator: (val) {
               if (val == null || val.isEmpty) {
                 return "Key can't empty";
@@ -107,10 +120,14 @@ class HomeView extends StatelessWidget {
             key: ValueKey(data.formList[index].index),
             initialValue: data.formList[index].value,
             controller: data.formList[index].valueController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(borderSide: BorderSide(width: 2)),
+            decoration: InputDecoration(
+              label: Text('Value ${data.formList[index].index.toString()}'),
+              border:
+                  const OutlineInputBorder(borderSide: BorderSide(width: 2)),
               hintText: 'Value',
+              hintStyle: const TextStyle(fontFamily: 'Matter'),
             ),
+            style: const TextStyle(fontFamily: 'Matter'),
             validator: (val) {
               if (val == null || val.isEmpty) {
                 return "Value can't empty";
@@ -126,8 +143,8 @@ class HomeView extends StatelessWidget {
           fit: FlexFit.tight,
           child: IconButton(
             onPressed: data.formList[index].isAddRemove
-                ? () => data.addWidget(context, index)
-                : () => data.removeWidget(index),
+                ? () => data.addWidget(context, data.formList[index], index)
+                : () => data.removeWidget(context, data.formList[index]),
             icon: data.formList[index].isAddRemove
                 ? const Icon(Icons.add_circle_outline)
                 : const Icon(Icons.remove_circle_outline),

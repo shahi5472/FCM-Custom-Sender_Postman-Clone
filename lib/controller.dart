@@ -16,23 +16,21 @@ class Controller extends ChangeNotifier {
   }
 
   void _initForm() {
-    formList.add(CustomForm(index: 0, isAddRemove: true));
+    formList.insert(0, CustomForm(index: 0, isAddRemove: true));
     notifyListeners();
   }
 
-  void addWidget(context, index) {
-    if (!formKey.currentState!.validate()) {
-      _showSnackBar(context, 'Validate Error');
-    } else {
-      formList[index].isAddRemove = false;
-      formList.add(CustomForm(index: index++, isAddRemove: true));
-    }
-
+  void addWidget(context, CustomForm model, index) {
+    model.isAddRemove = false;
+    int value = (model.index! + 1);
+    _showSnackBar(context, 'Add index :: $value');
+    formList.add(CustomForm(index: value, isAddRemove: true));
     notifyListeners();
   }
 
-  void removeWidget(index) {
-    formList.removeAt(index);
+  void removeWidget(context, CustomForm model) {
+    formList.remove(model);
+    _showSnackBar(context, 'Remove index :: ${model.index}');
     notifyListeners();
   }
 
