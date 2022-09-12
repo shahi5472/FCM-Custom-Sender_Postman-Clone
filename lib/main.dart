@@ -65,14 +65,6 @@ class HomeView extends StatelessWidget {
             style: const TextStyle(fontFamily: 'Matter'),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              data.formList.length,
-              (index) => Text('${data.formList[index].index.toString()}, '),
-            ),
-          ),
-          const SizedBox(height: 20),
         ],
       ),
     );
