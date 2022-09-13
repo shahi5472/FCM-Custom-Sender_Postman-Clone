@@ -46,25 +46,99 @@ class HomeView extends StatelessWidget {
   Form _buildBodyForm(Controller data) {
     return Form(
       key: data.formKey,
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
         children: [
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              padding: const EdgeInsets.all(20),
-              shrinkWrap: true,
-              itemCount: data.formList.length,
-              itemBuilder: (context, index) {
-                return _buildItemRow(data, index, context);
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: data.urlEditController,
+                    decoration: const InputDecoration(
+                      border:
+                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      hintText: 'Url',
+                      hintStyle: TextStyle(fontFamily: 'Matter'),
+                    ),
+                    style: const TextStyle(fontFamily: 'Matter'),
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return "Url can't empty";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextFormField(
+                    controller: data.topicEditController,
+                    decoration: const InputDecoration(
+                      border:
+                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      hintText: 'Topics',
+                      hintStyle: TextStyle(fontFamily: 'Matter'),
+                    ),
+                    style: const TextStyle(fontFamily: 'Matter'),
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return "Topics can't empty";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: TextFormField(
+              controller: data.tokenEditController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                hintText: 'Authorization',
+                hintStyle: TextStyle(fontFamily: 'Matter'),
+              ),
+              style: const TextStyle(fontFamily: 'Matter'),
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return "Authorization token can't empty";
+                }
+                return null;
               },
             ),
           ),
-          const SizedBox(height: 20),
-          Text(
-            json.encode(data.result),
-            style: const TextStyle(fontFamily: 'Matter'),
+          ListView.separated(
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            padding: const EdgeInsets.all(20),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: data.formList.length,
+            itemBuilder: (context, index) {
+              return _buildItemRow(data, index, context);
+            },
           ),
-          const SizedBox(height: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children:     [
+              const SizedBox(height: 20),
+              Text(
+                json.encode(data.result).toString(),
+                style: const TextStyle(fontFamily: 'Matter'),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                data.notificationResult.toString(),
+                style: const TextStyle(fontFamily: 'Matter'),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ],
       ),
     );
@@ -112,6 +186,8 @@ class HomeView extends StatelessWidget {
             key: ValueKey(data.formList[index].index),
             initialValue: data.formList[index].value,
             controller: data.formList[index].valueController,
+            maxLines: 30,
+            minLines: 1,
             decoration: InputDecoration(
               label: Text('Value ${data.formList[index].index.toString()}'),
               border:
